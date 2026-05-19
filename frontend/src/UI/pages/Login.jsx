@@ -15,7 +15,8 @@ function Login() {
   // Rediriger vers dashboard si connexion réussie
   useEffect(() => {
     if (user) {
-      navigate("/");
+      console.log("✅ User logged in, redirecting to dashboard...");
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 

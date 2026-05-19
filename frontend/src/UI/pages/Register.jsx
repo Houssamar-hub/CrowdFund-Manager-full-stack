@@ -16,7 +16,8 @@ function Register() {
   // Rediriger vers dashboard si inscription réussie
   useEffect(() => {
     if (user) {
-      navigate("/");
+      console.log("✅ User registered, redirecting to dashboard...");
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 
