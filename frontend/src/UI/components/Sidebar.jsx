@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +32,34 @@ const Sidebar = () => {
     }
   };
 
+=======
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";  // ← نزيدو هاد
+import { logout } from "../../store/slices/authSlice";   // ← نزيدو هاد
+import {
+  FiGrid,
+  FiFolder,
+  FiPlusCircle,
+  FiLogOut,
+} from "react-icons/fi";
+
+function Sidebar() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();  // ← نزيدو هاد
+  const { user } = useSelector((state) => state.auth);  // ← نزيدو هاد
+
+  const handleLogout = () => {
+    dispatch(logout());  // ← نزيدو هاد
+    navigate("/login");
+  };
+
+  // إذا ماكانش توكن، ما نظهرش الـ Sidebar
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+
+>>>>>>> f007301275f37080fbfbd8fc8073737b29d81c58
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
@@ -40,6 +69,7 @@ const Sidebar = () => {
         <span>LAUNCH</span>
       </div>
 
+<<<<<<< HEAD
       <nav style={{ flex: 1 }}>
         <ul className="nav-list">
           {navItems.map((item) => (
@@ -83,6 +113,22 @@ const Sidebar = () => {
         >
           <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
           <span>Logout</span>
+=======
+      <div className="bottom-section">
+        <div className="profile">
+          <div className="avatar">
+            {user?.name?.charAt(0).toUpperCase() || "U"}
+          </div>
+          <div>
+            <h4>{user?.name || "User"}</h4>
+            <p>{user?.email || "user@example.com"}</p>
+          </div>
+        </div>
+
+        <button className="logout-btn" onClick={handleLogout}>
+          <FiLogOut />
+          Logout
+>>>>>>> f007301275f37080fbfbd8fc8073737b29d81c58
         </button>
       </div>
     </aside>

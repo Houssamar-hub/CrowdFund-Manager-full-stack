@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL + "/projects";
@@ -42,3 +43,25 @@ const projectService = {
 };
 
 export default projectService;
+=======
+// import api from "./api";
+
+// const projectService = {
+//     getAllProjects: async () => {
+//         const response = await api.get("/projects");
+//         return response.data;
+//     },
+
+//     getProjectById: async (id) => {
+//         const response = await api.get(`/projects/${id}`);
+//         return response.data;
+//     },
+
+//     createProject: async (projectData) => {
+//         const response = await api.post("/projects", projectData);
+//         return response.data;
+//     },
+
+
+// };
+>>>>>>> f007301275f37080fbfbd8fc8073737b29d81c58
