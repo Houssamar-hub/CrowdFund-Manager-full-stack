@@ -1,4 +1,6 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";  // ← نزيدو هاد
+import { logout } from "../../store/slices/authSlice";   // ← نزيدو هاد
 import {
   FiGrid,
   FiFolder,
@@ -7,6 +9,21 @@ import {
 } from "react-icons/fi";
 
 function Sidebar() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();  // ← نزيدو هاد
+  const { user } = useSelector((state) => state.auth);  // ← نزيدو هاد
+
+  const handleLogout = () => {
+    dispatch(logout());  // ← نزيدو هاد
+    navigate("/login");
+  };
+
+  // إذا ماكانش توكن، ما نظهرش الـ Sidebar
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+
   return (
     <div className="sidebar">
       <div>
@@ -35,15 +52,16 @@ function Sidebar() {
 
       <div className="bottom-section">
         <div className="profile">
-          <div className="avatar">J</div>
-
+          <div className="avatar">
+            {user?.name?.charAt(0).toUpperCase() || "U"}
+          </div>
           <div>
-            <h4>John Doe</h4>
-            <p>john@example.com</p>
+            <h4>{user?.name || "User"}</h4>
+            <p>{user?.email || "user@example.com"}</p>
           </div>
         </div>
 
-        <button className="logout-btn">
+        <button className="logout-btn" onClick={handleLogout}>
           <FiLogOut />
           Logout
         </button>
