@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProjectById, updateProject, deleteProject, closeProject } from '../../store/slices/projectSlice';
 import ProjectForm from '../components/ProjectForm';
+import '../components/ProjectManagement.css';
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -41,22 +42,22 @@ const ProjectDetails = () => {
 
   if (isLoading && !selectedProject) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+        <div className="pm-spinner" style={{ width: '3rem', height: '3rem', border: '4px solid var(--primary)', borderTopColor: 'transparent', borderRadius: '50%' }}></div>
       </div>
     );
   }
 
-  if (!selectedProject) return <div className="p-8 text-center">Project not found.</div>;
+  if (!selectedProject) return <div style={{ padding: '2rem', textAlign: 'center' }}>Project not found.</div>;
 
   const percentage = (selectedProject.currentCapital / selectedProject.capital) * 100 || 0;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="page-container">
+      <div style={{ background: 'white', borderRadius: '1rem', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
         {isEditing ? (
-          <div className="p-8">
-            <h2 className="text-xl font-bold mb-6">Edit Project</h2>
+          <div style={{ padding: '2rem' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '1.5rem' }}>Edit Project</h2>
             <ProjectForm
               initialData={selectedProject}
               onSubmit={handleUpdate}
@@ -66,77 +67,67 @@ const ProjectDetails = () => {
           </div>
         ) : (
           <div>
-            <div className="px-8 py-8 border-b border-gray-50 flex justify-between items-start">
+            <div style={{ padding: '2rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
               <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-3xl font-bold text-gray-900">{selectedProject.title}</h1>
-                  <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                    selectedProject.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                  }`}>
-                    {selectedProject.status.toUpperCase()}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                  <h1 style={{ fontSize: '2rem', fontWeight: '800', margin: 0 }}>{selectedProject.title}</h1>
+                  <span className={`pm-badge ${selectedProject.status === 'open' ? 'pm-badge-open' : 'pm-badge-closed'}`}>
+                    {selectedProject.status}
                   </span>
                 </div>
-                <p className="text-gray-500">ID: {selectedProject._id}</p>
+                <p style={{ color: 'var(--text-light)', fontSize: '0.875rem' }}>ID: {selectedProject._id}</p>
               </div>
-              <div className="flex gap-3">
+              <div style={{ display: 'flex', gap: '0.75rem' }}>
                 {selectedProject.status === 'open' && (
                   <>
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-                    >
+                    <button onClick={() => setIsEditing(true)} className="pm-btn pm-btn-secondary" style={{ border: '1px solid var(--border)' }}>
                       Edit
                     </button>
-                    <button
-                      onClick={handleClose}
-                      className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors font-medium"
-                    >
+                    <button onClick={handleClose} className="pm-btn" style={{ background: '#f59e0b', color: 'white' }}>
                       Close Campaign
                     </button>
                   </>
                 )}
-                <button
-                  onClick={handleDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-                >
+                <button onClick={handleDelete} className="pm-btn" style={{ background: '#ef4444', color: 'white' }}>
                   Delete
                 </button>
               </div>
             </div>
 
-            <div className="p-8 grid grid-cols-1 lg:grid-cols-3 gap-10">
-              <div className="lg:col-span-2 space-y-8">
+            <div style={{ padding: '2rem', display: 'grid', gridTemplateColumns: '1fr', gap: '3rem' }}>
+              {/* Responsive Grid - would normally use CSS classes but doing inline for quick fix */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">About this project</h3>
-                  <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
+                  <h3 style={{ fontSize: '1.125rem', fontWeight: '700', marginBottom: '1rem' }}>About this project</h3>
+                  <p style={{ color: 'var(--text-gray)', lineHeight: '1.7', whiteSpace: 'pre-wrap' }}>
                     {selectedProject.description}
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Investors ({selectedProject.investments?.length || 0})</h3>
-                  <div className="bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
-                    <table className="w-full text-left">
-                      <thead>
-                        <tr className="bg-gray-100 border-b border-gray-200">
-                          <th className="px-6 py-3 text-xs font-semibold text-gray-600 uppercase">Investor</th>
-                          <th className="px-6 py-3 text-xs font-semibold text-gray-600 uppercase">Amount</th>
-                          <th className="px-6 py-3 text-xs font-semibold text-gray-600 uppercase">% Equity</th>
+                  <h3 style={{ fontSize: '1.125rem', fontWeight: '700', marginBottom: '1rem' }}>Investors ({selectedProject.investments?.length || 0})</h3>
+                  <div style={{ background: '#f9fafb', borderRadius: '1rem', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                      <thead style={{ background: '#f3f4f6' }}>
+                        <tr>
+                          <th style={{ padding: '1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-gray)', textTransform: 'uppercase' }}>Investor</th>
+                          <th style={{ padding: '1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-gray)', textTransform: 'uppercase' }}>Amount</th>
+                          <th style={{ padding: '1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-gray)', textTransform: 'uppercase' }}>% Equity</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-200">
+                      <tbody>
                         {(selectedProject.investments || []).map((inv, idx) => (
-                          <tr key={idx} className="hover:bg-gray-50 transition-colors">
-                            <td className="px-6 py-4 text-sm text-gray-900">{inv.investorId?.name || 'Anonymous'}</td>
-                            <td className="px-6 py-4 text-sm text-gray-900 font-medium">${inv.amount.toLocaleString()}</td>
-                            <td className="px-6 py-4 text-sm text-gray-600">
+                          <tr key={idx} style={{ borderTop: '1px solid var(--border)' }}>
+                            <td style={{ padding: '1rem', fontSize: '0.875rem' }}>{inv.investorId?.name || 'Anonymous'}</td>
+                            <td style={{ padding: '1rem', fontSize: '0.875rem', fontWeight: '600' }}>${inv.amount.toLocaleString()}</td>
+                            <td style={{ padding: '1rem', fontSize: '0.875rem', color: 'var(--text-gray)' }}>
                               {((inv.amount / selectedProject.capital) * 100).toFixed(2)}%
                             </td>
                           </tr>
                         ))}
                         {(!selectedProject.investments || selectedProject.investments.length === 0) && (
                           <tr>
-                            <td colSpan="3" className="px-6 py-8 text-center text-gray-500 text-sm">No investments yet.</td>
+                            <td colSpan="3" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-light)', fontSize: '0.875rem' }}>No investments yet.</td>
                           </tr>
                         )}
                       </tbody>
@@ -145,30 +136,25 @@ const ProjectDetails = () => {
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <div className="bg-indigo-50 p-6 rounded-2xl border border-indigo-100">
-                  <h3 className="text-indigo-900 font-bold text-lg mb-4">Funding Status</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="text-indigo-700 font-medium">{Math.round(percentage)}% Funded</span>
-                        <span className="text-indigo-900 font-bold">${(selectedProject.currentCapital || 0).toLocaleString()}</span>
-                      </div>
-                      <div className="w-full bg-indigo-200 rounded-full h-3">
-                        <div 
-                          className="bg-indigo-600 h-3 rounded-full" 
-                          style={{ width: `${Math.min(percentage, 100)}%` }}
-                        ></div>
-                      </div>
+              <div style={{ background: '#eef2ff', padding: '1.5rem', borderRadius: '1rem', border: '1px solid #e0e7ff' }}>
+                <h3 style={{ color: 'var(--primary)', fontWeight: '800', marginBottom: '1.5rem' }}>Funding Status</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem', fontWeight: '700', marginBottom: '0.5rem' }}>
+                      <span style={{ color: 'var(--primary)' }}>{Math.round(percentage)}% Funded</span>
+                      <span>${(selectedProject.currentCapital || 0).toLocaleString()}</span>
                     </div>
-                    <div className="pt-2">
-                      <p className="text-xs text-indigo-600 font-medium uppercase tracking-wider mb-1">Target Capital</p>
-                      <p className="text-2xl font-black text-indigo-900">${selectedProject.capital.toLocaleString()}</p>
+                    <div style={{ background: '#cbd5e1', height: '12px', borderRadius: '6px', overflow: 'hidden' }}>
+                      <div style={{ height: '100%', background: 'var(--primary)', width: `${Math.min(percentage, 100)}%`, transition: 'width 0.5s' }}></div>
                     </div>
-                    <div className="pt-2">
-                      <p className="text-xs text-indigo-600 font-medium uppercase tracking-wider mb-1">Max per Investor</p>
-                      <p className="text-lg font-bold text-indigo-900">{selectedProject.maxInvestmentPercent}%</p>
-                    </div>
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '0.625rem', fontWeight: '800', color: 'var(--text-light)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Target Goal</p>
+                    <p style={{ fontSize: '1.5rem', fontWeight: '900' }}>${selectedProject.capital.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '0.625rem', fontWeight: '800', color: 'var(--text-light)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Ceiling</p>
+                    <p style={{ fontSize: '1.125rem', fontWeight: '700' }}>{selectedProject.maxInvestmentPercent}% per Investor</p>
                   </div>
                 </div>
               </div>

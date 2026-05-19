@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createProject, reset } from '../../store/slices/projectSlice';
 import ProjectForm from '../components/ProjectForm';
+import '../components/ProjectManagement.css';
 
 const CreateProject = () => {
   const dispatch = useDispatch();
@@ -30,26 +31,24 @@ const CreateProject = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="px-8 py-6 bg-indigo-600">
-          <h2 className="text-2xl font-bold text-white">Create New Project</h2>
-          <p className="text-indigo-100 mt-1">Fill in the details to launch your campaign</p>
+    <div className="page-container" style={{ paddingTop: '3rem' }}>
+      <div className="form-container">
+        <div style={{ background: 'var(--primary)', margin: '-2.5rem -2.5rem 2.5rem -2.5rem', padding: '2rem 2.5rem', borderTopLeftRadius: '1rem', borderTopRightRadius: '1rem' }}>
+          <h2 style={{ color: 'white', fontSize: '1.75rem', fontWeight: '800', margin: 0 }}>Launch New Venture</h2>
+          <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: '0.5rem' }}>Share your vision with the world</p>
         </div>
         
-        <div className="p-8">
-          {isError && (
-            <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded">
-              <p className="text-sm text-red-700">{message}</p>
-            </div>
-          )}
+        {isError && (
+          <div style={{ background: '#fef2f2', borderLeft: '4px solid #ef4444', padding: '1rem', marginBottom: '2rem', borderRadius: '0.5rem' }}>
+            <p style={{ color: '#991b1b', fontSize: '0.875rem' }}>{message}</p>
+          </div>
+        )}
 
-          <ProjectForm
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            isLoading={isLoading}
-          />
-        </div>
+        <ProjectForm
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

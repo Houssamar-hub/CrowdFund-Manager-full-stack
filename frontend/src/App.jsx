@@ -2,13 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './routes/AppRoutes';
 import Sidebar from './UI/components/Sidebar';
+import './UI/components/ProjectManagement.css';
 
 function App() {
   return (
     <Router>
-      <div className="flex min-h-screen bg-gray-100">
+      <div className="app-container">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto">
+        <main className="main-content">
           <AppRoutes />
         </main>
       </div>
