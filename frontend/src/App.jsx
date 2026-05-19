@@ -1,25 +1,18 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Sidebar from "./UI/components/Sidebar";
-
-import Dashboard from "./UI/pages/Dashboard";
-import Projects from "./UI/pages/Projects";
-import CreateProject from "./UI/pages/CreateProject";
-
-
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
+import Sidebar from './UI/components/Sidebar';
 
 function App() {
   return (
-    <div className="app">
-      <Sidebar />
-
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/create-project" element={<CreateProject />} />
-        </Routes>
+    <Router>
+      <div className="flex min-h-screen bg-gray-100">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto">
+          <AppRoutes />
+        </main>
       </div>
-    </div>
+    </Router>
   );
 }
 
