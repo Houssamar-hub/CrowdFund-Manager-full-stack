@@ -1,9 +1,15 @@
 import { Router } from "express";
 import { signup, login } from "../controllers/auth.controller.js";
-import {authValidationSingeup , emailValidation} from "../middlewares/authValidation.middleware.js"
 
 const router = Router();
-router.post("/signup", authValidationSingeup , emailValidation , signup);
+
+// IMPORTANT: La route doit être exactement "/signup" pas "/signup" avec autre chose
+router.post("/signup", signup);
 router.post("/login", login);
+
+// Route de test
+router.get("/test", (req, res) => {
+  res.json({ message: "Auth route is working!" });
+});
 
 export default router;

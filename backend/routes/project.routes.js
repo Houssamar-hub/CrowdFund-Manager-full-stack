@@ -1,15 +1,24 @@
 import { Router } from "express";
-import { protect, authorizeRoles } from "../middlewares/auth.middleware.js";
+import { protect } from "../middlewares/auth.middleware.js";
 import {
   createProject,
   getMyProjects,
   getOpenProjects,
+  getProjectById,
+  updateProject,
+  closeProject,
+  deleteProject,
 } from "../controllers/project.controller.js";
 
 const router = Router();
 
-router.post("/", protect, authorizeRoles("owner"), createProject);
-router.get("/mine", protect, authorizeRoles("owner"), getMyProjects);
-router.get("/open", protect, authorizeRoles("investor"), getOpenProjects);
+// Routes CRUD pour les projets
+router.post("/", protect, createProject);           // POST /projects - Créer un projet
+router.get("/mine", protect, getMyProjects);        // GET /projects/mine - Mes projets
+router.get("/open", protect, getOpenProjects);      // GET /projects/open - Projets ouverts
+router.get("/:id", protect, getProjectById);        // GET /projects/:id - Détail projet
+router.put("/:id", protect, updateProject);         // PUT /projects/:id - Modifier projet
+router.patch("/:id/close", protect, closeProject);  // PATCH /projects/:id/close - Fermer projet
+router.delete("/:id", protect, deleteProject);      // DELETE /projects/:id - Supprimer projet
 
 export default router;

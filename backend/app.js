@@ -2,8 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
 import projectRoutes from "./routes/project.routes.js";
-import investmentRoutes from "./routes/investment.routes.js";
-import adminRoutes from "./routes/admin.routes.js";
 import cors from "cors";
 
 dotenv.config();
@@ -17,20 +15,28 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const test = (req, res, next) => {
-  // res.json({ message: "hello houssam" });
-  req.name = "houssam";
-  next();
-};
-
+// Routes
 app.use("/auth", authRoutes);
-app.use("/projects", projectRoutes);
-app.use("/investments", investmentRoutes);
-app.use("/admin", adminRoutes);
+app.use("/projects", projectRoutes);  // ⚠️ Important: doit être après les middlewares
 
+// Route de test
+app.get("/", (req, res) => {
+  res.json({ message: "Backend is running!" });
+});
+
+// Route 404
+app.use((req, res) => {
+  res.status(404).json({ 
+    message: "Route not found",
+    requestedUrl: req.originalUrl
+  });
+});
+
+// Error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error("Error:", err.message);
   res.status(500).json({ message: err.message });
 });
 
