@@ -3,7 +3,7 @@ import api from './api';
 const investmentService = {
   // Faire un investissement
   invest: async (investmentData) => {
-    const response = await api.post('/investments', investmentData);
+    const response = await api.post('/investment', investmentData);
     return response.data;
   },
 
