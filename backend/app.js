@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import cors from "cors";
+import investmentRoutes from "./routes/investment.routes.js";
 
 dotenv.config();
 const app = express();
@@ -19,7 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/auth", authRoutes);
-app.use("/projects", projectRoutes);  // ⚠️ Important: doit être après les middlewares
+app.use("/projects", projectRoutes); 
+app.use("/investment", investmentRoutes); 
 
 // Route de test
 app.get("/", (req, res) => {

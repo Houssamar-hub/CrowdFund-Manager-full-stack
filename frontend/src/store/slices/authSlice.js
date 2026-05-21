@@ -28,7 +28,11 @@ export const loginUser = createAsyncThunk(
 );
 
 const initialState = {
-  user: null,
+  user: {
+    name: localStorage.getItem("userName"),
+    email: localStorage.getItem("userEmail"),
+    role: localStorage.getItem("userRole"),
+  },
   token: localStorage.getItem('token'),
   isLoading: false,
   error: null,
@@ -61,6 +65,7 @@ const authSlice = createSlice({
         localStorage.setItem('token', action.payload.token);
         localStorage.setItem('userName', action.payload.user?.name);
         localStorage.setItem('userEmail', action.payload.user?.email);
+        localStorage.setItem('userRole', action.payload.user?.role);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -78,6 +83,7 @@ const authSlice = createSlice({
         localStorage.setItem('token', action.payload.token);
         localStorage.setItem('userName', action.payload.user?.name);
         localStorage.setItem('userEmail', action.payload.user?.email);
+        localStorage.setItem('userRole', action.payload.user?.role);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

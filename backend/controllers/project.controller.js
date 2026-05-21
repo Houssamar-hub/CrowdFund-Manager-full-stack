@@ -40,7 +40,7 @@ export const createProject = async (req, res) => {
 // Récupérer mes projets (pour owner)
 export const getMyProjects = async (req, res) => {
   try {
-    console.log("📋 Fetching projects for user:", req.user._id);
+    console.log("Fetching projects for user:", req.user._id);
     
     const projects = await Project.find({ owner: req.user._id })
       .populate({
@@ -49,11 +49,11 @@ export const getMyProjects = async (req, res) => {
       })
       .sort({ createdAt: -1 });
     
-    console.log(`✅ Found ${projects.length} projects`);
+    console.log(`Found ${projects.length} projects`);
     res.json(projects);
     
   } catch (error) {
-    console.error("❌ Error fetching my projects:", error);
+    console.error("Error fetching my projects:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -61,7 +61,7 @@ export const getMyProjects = async (req, res) => {
 // Récupérer tous les projets ouverts (pour investor)
 export const getOpenProjects = async (req, res) => {
   try {
-    console.log("🔓 Fetching all open projects...");
+    console.log("Fetching all open projects...");
     
     const projects = await Project.find({ status: "open" })
       .populate("owner", "name email")
@@ -71,11 +71,11 @@ export const getOpenProjects = async (req, res) => {
       })
       .sort({ createdAt: -1 });
     
-    console.log(`✅ Found ${projects.length} open projects`);
+    console.log(`Found ${projects.length} open projects`);
     res.json(projects);
     
   } catch (error) {
-    console.error("❌ Error fetching open projects:", error);
+    console.error("Error fetching open projects:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -84,7 +84,7 @@ export const getOpenProjects = async (req, res) => {
 export const getProjectById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("🔍 Fetching project:", id);
+    console.log("Fetching project:", id);
     
     const project = await Project.findById(id)
       .populate({
@@ -97,11 +97,11 @@ export const getProjectById = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
     
-    console.log("✅ Project found:", project.title);
+    console.log("Project found:", project.title);
     res.json(project);
     
   } catch (error) {
-    console.error("❌ Error fetching project:", error);
+    console.error("Error fetching project:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -112,7 +112,7 @@ export const updateProject = async (req, res) => {
     const { id } = req.params;
     const { title, description, capital, maxInvestmentPercent } = req.body;
     
-    console.log("✏️ Updating project:", id);
+    console.log("Updating project:", id);
     
     const project = await Project.findById(id);
     
@@ -139,11 +139,11 @@ export const updateProject = async (req, res) => {
     
     await project.save();
     
-    console.log("✅ Project updated successfully");
+    console.log("Project updated successfully");
     res.json(project);
     
   } catch (error) {
-    console.error("❌ Error updating project:", error);
+    console.error("Error updating project:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -152,7 +152,7 @@ export const updateProject = async (req, res) => {
 export const closeProject = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("🔒 Closing project:", id);
+    console.log("Closing project:", id);
     
     const project = await Project.findById(id);
     
@@ -172,11 +172,11 @@ export const closeProject = async (req, res) => {
     project.status = "closed";
     await project.save();
     
-    console.log("✅ Project closed successfully");
+    console.log("Project closed successfully");
     res.json({ message: "Project closed successfully", project });
     
   } catch (error) {
-    console.error("❌ Error closing project:", error);
+    console.error("Error closing project:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -185,7 +185,7 @@ export const closeProject = async (req, res) => {
 export const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("🗑️ Deleting project:", id);
+    console.log("Deleting project:", id);
     
     const project = await Project.findById(id);
     
@@ -204,11 +204,11 @@ export const deleteProject = async (req, res) => {
     // Supprimer le projet
     await project.deleteOne();
     
-    console.log("✅ Project and related investments deleted successfully");
+    console.log("Project and related investments deleted successfully");
     res.json({ message: "Project deleted successfully" });
     
   } catch (error) {
-    console.error("❌ Error deleting project:", error);
+    console.error(" Error deleting project:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -271,7 +271,7 @@ export const investInProject = async (req, res) => {
     
     await project.save();
     
-    console.log("✅ Investment successful");
+    console.log("Investment successful");
     res.status(201).json({ 
       message: "Investment successful", 
       investment,
@@ -285,7 +285,7 @@ export const investInProject = async (req, res) => {
     });
     
   } catch (error) {
-    console.error("❌ Error investing in project:", error);
+    console.error("Error investing in project:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -294,17 +294,17 @@ export const investInProject = async (req, res) => {
 export const getProjectInvestments = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("📊 Fetching investments for project:", id);
+    console.log("Fetching investments for project:", id);
     
     const investments = await Investment.find({ projectId: id })
       .populate("investorId", "name email")
       .sort({ createdAt: -1 });
     
-    console.log(`✅ Found ${investments.length} investments`);
+    console.log(`Found ${investments.length} investments`);
     res.json(investments);
     
   } catch (error) {
-    console.error("❌ Error fetching investments:", error);
+    console.error("Error fetching investments:", error);
     res.status(500).json({ message: error.message });
   }
 };
