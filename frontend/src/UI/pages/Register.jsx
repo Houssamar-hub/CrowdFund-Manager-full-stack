@@ -13,7 +13,6 @@ function Register() {
   const dispatch = useDispatch();
   const { user, isLoading, error } = useSelector((state) => state.auth);
 
-  // Rediriger vers dashboard si inscription réussie
   useEffect(() => {
     if (user) {
       console.log("✅ User registered, redirecting to dashboard...");
@@ -26,10 +25,12 @@ function Register() {
     dispatch(clearError());
 
     if (!fullName || !email || !password) {
+      alert("Please fill in all fields");
       return;
     }
 
     if (password.length < 6) {
+      alert("Password must be at least 6 characters");
       return;
     }
 
@@ -37,11 +38,19 @@ function Register() {
       await dispatch(registerUser({ 
         name: fullName, 
         email, 
-        password 
+        password,
+        role: "owner"
       })).unwrap();
-      // Redirection se fait dans useEffect
     } catch (err) {
       console.error("Register error:", err);
+      // Afficher un message d'erreur plus clair
+      if (err?.message && err.message.includes("duplicate key")) {
+        alert("This email is already registered. Please use a different email or login.");
+      } else if (err?.message) {
+        alert(err.message);
+      } else {
+        alert("Registration failed. Please try again.");
+      }
     }
   };
 
@@ -53,7 +62,13 @@ function Register() {
           Create your account to start managing projects
         </p>
 
-        {error && <div className="error-message">{error}</div>}
+        {error && (
+          <div className="error-message">
+            {error.includes("duplicate") 
+              ? "This email is already registered. Please login instead."
+              : error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="input-group">
