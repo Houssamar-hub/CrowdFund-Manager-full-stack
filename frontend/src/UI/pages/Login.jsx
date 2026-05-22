@@ -5,82 +5,88 @@ import { loginUser, clearError } from "../../store/slices/authSlice";
 import "../../style/Auth.css";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { user, isLoading, error } = useSelector((state) => state.auth);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-  // Rediriger vers dashboard si connexion réussie
-  useEffect(() => {
-    if (user) {
-      console.log("✅ User logged in, redirecting to dashboard...");
-      navigate("/dashboard");
-    }
-  }, [user, navigate]);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { user, isLoading, error } = useSelector((state) => state.auth);
+    console.log(user);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    dispatch(clearError());
+    // Rediriger vers dashboard si connexion réussie
+    // useEffect(() => {
+    //     if (user) {
+    //         console.log("✅ User logged in, redirecting to dashboard...");
+    //         navigate("/dashboard");
+    //     }
+    // }, [user, navigate]);
 
-    if (!email || !password) {
-      return;
-    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(clearError());
 
-    try {
-      await dispatch(loginUser({ email, password })).unwrap();
-    } catch (err) {
-      console.error("Login error:", err);
-    }
-  };
+        if (!email || !password) {
+            return;
+        }
 
-  return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h1>Welcome Back</h1>
-        <p className="subtitle">
-          Enter your credentials to access your account
-        </p>
+        try {
+            dispatch(loginUser({ email, password })).unwrap();
+            navigate("/");
+        } catch (err) {
+            console.error("Login error:", err);
+        }
+    };
 
-        {error && <div className="error-message">{error}</div>}
+    return (
+        <div className="auth-container">
+            <div className="auth-card">
+                <h1>Welcome Back</h1>
+                <p className="subtitle">
+                    Enter your credentials to access your account
+                </p>
 
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Email</label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
-              required
-            />
-          </div>
+                {error && <div className="error-message">{error}</div>}
 
-          <div className="input-group">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={isLoading}
-              required
-            />
-          </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="input-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            disabled={isLoading}
+                            required
+                        />
+                    </div>
 
-          <button type="submit" className="auth-btn" disabled={isLoading}>
-            {isLoading ? "Loading..." : "Sign In"}
-          </button>
-        </form>
+                    <div className="input-group">
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            disabled={isLoading}
+                            required
+                        />
+                    </div>
 
-        <p className="bottom-text">
-          Don't have an account? <Link to="/register">Register</Link>
-        </p>
-      </div>
-    </div>
-  );
+                    <button
+                        type="submit"
+                        className="auth-btn"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Loading..." : "Sign In"}
+                    </button>
+                </form>
+
+                <p className="bottom-text">
+                    Don't have an account? <Link to="/register">Register</Link>
+                </p>
+            </div>
+        </div>
+    );
 }
 
 export default Login;

@@ -36,8 +36,12 @@ function Sidebar() {
                         <FiFolder />
                         <span>Projects</span>
                     </NavLink>
-
-                   
+                    {user?.role !== "investor" && (
+                        <NavLink to="/create-project" className="nav-item">
+                            <FiPlusCircle />
+                            <span>Create Project</span>
+                        </NavLink>
+                    )}
                 </nav>
             </div>
 
@@ -62,9 +66,3 @@ function Sidebar() {
 }
 
 export default Sidebar;
- {user?.role !== "investor" && (
-                        <NavLink to="/create-project" className="nav-item">
-                            <FiPlusCircle />
-                            <span>Create Project</span>
-                        </NavLink>
-                    )}
