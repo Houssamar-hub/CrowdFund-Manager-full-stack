@@ -18,8 +18,10 @@ export const fetchOpenProjects = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await projectService.getOpenProjects();
+      console.log("OPEN PROJECTS RESPONSE:", response);
       return response;
     } catch (error) {
+      console.log("OPEN PROJECTS ERROR:", error);
       return rejectWithValue(error.response?.data?.message);
     }
   }
