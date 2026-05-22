@@ -14,15 +14,16 @@ function Login() {
     console.log(user);
 
     // Rediriger vers dashboard si connexion réussie
-    // useEffect(() => {
-    //     if (user) {
-    //         console.log("✅ User logged in, redirecting to dashboard...");
-    //         navigate("/dashboard");
-    //     }
-    // }, [user, navigate]);
+    useEffect(() => {
+        if (user) {
+            console.log("✅ User logged in, redirecting to dashboard...");
+            navigate("/");
+        }
+    }, [user, navigate]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
         dispatch(clearError());
 
         if (!email || !password) {
@@ -30,7 +31,8 @@ function Login() {
         }
 
         try {
-            dispatch(loginUser({ email, password })).unwrap();
+            await dispatch(loginUser({ email, password })).unwrap();
+
             navigate("/");
         } catch (err) {
             console.error("Login error:", err);
@@ -77,7 +79,14 @@ function Login() {
                         className="auth-btn"
                         disabled={isLoading}
                     >
-                        {isLoading ? "Loading..." : "Sign In"}
+                        {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <span>Loading...</span>
+                            </div>
+                        ) : (
+                            "Sign In"
+                        )}
                     </button>
                 </form>
 

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchMyProjects } from "../../store/slices/projectSlice";
+import { Loader } from "lucide-react";
 
 const Dashboard = () => {
     const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const Dashboard = () => {
                 0;
             return sum + invested;
         }, 0) || 0;
-
+    if (isLoading) return <Loader />;
     return (
         <>
             {user?.role === "investor" ? (

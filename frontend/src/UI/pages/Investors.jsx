@@ -80,7 +80,6 @@ const Investors = () => {
       </div>
     );
   }
-
   return (
     <div>
       <div style={{ marginBottom: '32px' }}>

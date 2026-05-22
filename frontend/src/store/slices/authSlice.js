@@ -32,10 +32,20 @@ export const loginUser = createAsyncThunk(
 );
 
 const initialState = {
-    user: null,
-    token: localStorage.getItem("token"),
-    isLoading: false,
-    error: null,
+
+  user: localStorage.getItem("token")
+    ? {
+        name: localStorage.getItem("userName"),
+        email: localStorage.getItem("userEmail"),
+        role: localStorage.getItem("userRole"),
+      }
+    : null,
+
+  token: localStorage.getItem("token"),
+
+  isLoading: false,
+
+  error: null,
 };
 
 const authSlice = createSlice({
